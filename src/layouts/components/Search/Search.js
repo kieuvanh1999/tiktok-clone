@@ -61,7 +61,7 @@ function Search() {
     return (
         // Using a wrapper <div> tag around the reference element solves
         // this by creating a new parentNode context.
-        <div>
+        <div className={cx('KMJDNQTSBQ')}>
             <HeadlessTippy
                 interactive
                 visible={showResult && searchResult.length > 0}
