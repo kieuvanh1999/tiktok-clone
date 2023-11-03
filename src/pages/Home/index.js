@@ -17,16 +17,23 @@ function Home() {
         });
 
         // lắng nghe sự kiện cuộn của cửa sổ
+    }, []);
+
+    const fetchData = async () => {
+        axios.get(baseURL).then((response) => {
+            setVideoResult([...videoResult, ...response.data.data]);
+            setIsFetching(false);
+        });
+    };
+
+    useEffect(() => {
         window.addEventListener('scroll', () => {
             // chỉ gọi Ajax khi người dùng cuộn đến cuối trang
             if (shouldFetchData()) {
                 setIsFetching(true);
 
-                // gọi Ajax để lấy thêm dữ liệu
-                axios.get(baseURL).then((response) => {
-                    setVideoResult([...videoResult, ...response.data.data]);
-                    setIsFetching(false);
-                });
+                // gọi Ajax để lấy thêm dữ
+                fetchData();
             }
         });
 

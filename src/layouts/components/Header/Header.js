@@ -24,7 +24,7 @@ import { InboxIcon, MessageIcon, UploadIcon, CaretUpIcon } from '~/components/Ic
 import Image from '~/components/Image';
 import Search from '../Search';
 import ava from '../../../assets/images/ava.jpg';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Tabs } from 'antd';
 
@@ -64,8 +64,24 @@ const MENU_ITEMS = [
     },
 ];
 
+function getUser() {
+    let user = localStorage.getItem('users');
+    if (user) {
+        user = JSON.parse(user);
+        //add class khi đăng nhập thành công // và biến mất khi đăng xuất
+        const e = document.getElementById('root');
+        e.classList.add('users');
+    } else {
+        user = null;
+    }
+    return user;
+}
+
 function Header() {
     const [show, setShow] = useState(false);
+    const [user, setUser] = useState(getUser());
+    const [params, setParams] = useState('');
+
     const currentUser = true;
 
     // Handle logic
@@ -103,9 +119,7 @@ function Header() {
         },
     ];
 
-    const onChange = (key) => {
-        console.log(key);
-    };
+    const onChange = (key) => {};
 
     const items = [
         {
@@ -226,6 +240,15 @@ function Header() {
             children: 'Follower',
         },
     ];
+
+    useEffect(() => {
+        if (user) {
+            setParams(`/UpdateUser/${user.id}`);
+        } else {
+            // The user is not logged in, so do nothing.
+        }
+    }, []);
+
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -235,7 +258,7 @@ function Header() {
                 <Search />
                 <div className={cx('ZKAJTNCBRJ')}>
                     <div className={cx('actions')}>
-                        {currentUser ? (
+                        {user ? (
                             <>
                                 <Tippy delay={[0, 50]} content="Upload video" placement="bottom">
                                     <button className={cx('action-btn')}>
@@ -257,12 +280,14 @@ function Header() {
                         ) : (
                             <>
                                 <Button text>Upload</Button>
-                                <Button primary>Log in</Button>
+                                <Link to={config.routes.login}>
+                                    <Button primary>Login</Button>
+                                </Link>
                             </>
                         )}
 
-                        <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
-                            {currentUser ? (
+                        <Menu items={user ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+                            {user ? (
                                 <Image className={cx('user-avatar')} src={ava} alt="Nguyen Van A" />
                             ) : (
                                 <button className={cx('more-btn')}>

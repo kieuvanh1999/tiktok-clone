@@ -45,7 +45,7 @@ export default function VidsModel({ home, items }) {
         videoRef.current.pause();
     };
     return (
-        <div className="PTQFNQXNNJ">
+        <div className="PTQFNQXNNJ" id="1DORJBYMLNT">
             <div className="QCLUGLKKCD">
                 <div style={{ display: 'flex' }} className="MDHOCQRSJO">
                     <div className="RJTDPMNNBR">
